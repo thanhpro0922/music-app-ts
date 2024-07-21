@@ -27,6 +27,28 @@ if (aplayer) {
         avatar.style.animationPlayState = "paused";
     });
 }
-
-
 //@ APlayer
+
+//@ Button Like
+const buttonLike = document.querySelector("[button-like]");
+if (buttonLike) {
+    buttonLike.addEventListener("click", () => {
+        const idSong = buttonLike.getAttribute("button-like");
+        const isActive = buttonLike.classList.contains("active");
+        const typeLike = isActive ? "dislike" : "like";
+        const link = `/songs/like/${typeLike}/${idSong}`; //$ đây là api like lúc nãy code, mà ở dây nó ngầm đinh trước cái /songs  là localhost:3000 rồi nên ko cần điền đầy đủ link
+
+        const option = {
+            method: "PATCH",
+        }; //! Vì tính năng like cũng là dạng cập nhật trong database, thì để method patch
+        fetch(link, option)
+            .then((res) => res.json())
+            .then((data) => {
+                const span = buttonLike.querySelector("span");
+                span.innerHTML = `${data.like} thích`;
+
+                buttonLike.classList.toggle("active");
+            });
+    });
+}
+//@ End Button Like

@@ -183,7 +183,7 @@
     overflow: hidden;
     border: 5px solid #fd9540;
     margin-right: 20px;
-    animation: spin 12s linear infinite;
+    animation: spin 12s linear infinite paused;
 }
 
 @keyframes spin {
