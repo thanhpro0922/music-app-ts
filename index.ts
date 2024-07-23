@@ -2,7 +2,10 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import * as database from "./config/database";
 
+import adminRoutes from "./routes/admin/index.route";
 import clientRoutes from "./routes/client/index.route";
+import { systemConfig } from "./config/config";
+import path from "path"; //! thằng path này là 1 thư viện cs sẵn trong nodejs rồi nên chỉ cần import là xong
 
 dotenv.config();
 database.connect();
@@ -10,10 +13,24 @@ database.connect();
 const app: Express = express();
 const port: number | string = process.env.PORT || 3000;
 
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 app.set("views", "./views");
 app.set("view engine", "pug");
+
+//@ TinyMCE
+app.use(
+    "/tinymce",
+    express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
+
+//@ End TinyMCE
+
+//@ APP Local variables
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+//% Admin Route
+adminRoutes(app);
 
 //% Client Route
 clientRoutes(app);
